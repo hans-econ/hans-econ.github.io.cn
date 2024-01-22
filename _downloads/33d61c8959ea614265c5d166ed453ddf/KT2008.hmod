@@ -1,0 +1,91 @@
+parameters beta sigma alpha nu delta xi_max a w z d;
+% The parameters are taken from Khan and Thomas (2008)
+beta = 0.961; % subjective discount factor 
+sigma = 1.0;  % inverse of EIS
+alpha = 0.256; % capital elasticity of production function
+nu = 0.64;  % labor share
+delta = 0.085; % capital depreciation rate
+xi_max = 0.0083; % upper bound on adjustment cost
+a = 0.011; % no-adjustment cost region
+w = 1.0;    % wage rate
+z = 1.0;    % aggregate productivity
+d = beta;   % discount factor
+
+var_shock e;
+% idiosyncratic productivity log(e') = 0.859*log(e) + N(0,0.022^2)
+% discretized as a 15 State Markov Chain using Rouwenhorst Method 
+setup_shock_process;
+
+var_state k;
+k_min = 1e-3;
+k_max = 4;
+nkgrid = 200;
+k = exp(linspace(log(k_min), log(k_max + k_min), nkgrid)) - k_min;
+
+var_policy ka kc;
+initial ka k;
+initial kc (1-delta)*k;
+
+var_aux p nd kp y c;
+
+vfi;
+    % labor demand from accounting profit max
+    nd_input = (nu*exp(z)*exp(e)*(k^alpha)/w)^(1/(1-nu));
+    y = exp(z)*exp(e)*(k^alpha)*(nd_input^nu);
+    
+    % fixed part of Bellman
+    Tv_fixed = y - w*nd_input + (1-delta)*k; 
+
+    Ra = -ka + d*EXPECT(v(ka));   % objective for unconstrained firm
+    Rc = -kc + d*EXPECT(v(kc));   % objective for constrained firm
+    objective = Ra + Rc;          % multi objective optimimzation 
+
+    ka >= 0.0;
+    kc >= (1 - delta - a)*k;    % adjustment constrained
+    kc <= (1 - delta + a)*k;
+
+    xi_tilde = (Ra - Rc)/w; % adjustment threshold before considering domain
+    xi_star = min(max(xi_tilde,0.0),xi_max); % adjusting for domain
+    p = xi_star/xi_max; % adjustment probability
+    nd_adjust = xi_star*xi_star/(2*xi_max); % adjustment cost in labor unit
+    
+    % Bellman equation update
+    Tv = Tv_fixed + p*Ra - w*nd_adjust + (1-p)*Rc;
+    
+    kp = p*ka + (1-p)*kc;       % average capital holding for the next period
+    nd = nd_input + nd_adjust;  % firm's gross labor demand
+    c = y + (1-delta)*k - kp;   % firm's sale to consumers
+    
+    % Stochastic transition
+    k(+1) = {ka, kc} {p, 1-p};
+end;
+
+var_agg C;
+C = 0.4135;        % initial
+chi = 2.32531;
+n_star = 1/3;   % calibration target
+
+var_agg_shock z;
+z = 0.0;        % steady state value
+
+model_cali(C, chi);
+    % update parameters that enter vfi
+    w = chi / C^(-sigma);       % implied by FOC for labor
+    
+    % equations
+    C + kp - (1-delta)*k == y;  % goods demand = goods supply
+    nd == n_star;               % labor demand = cali labor supply
+end;
+
+model;
+    % update parameters that enter vfi
+    d = beta*(C(+1)/C)^(-sigma);
+    w = chi / C^(-sigma);       % implied by FOC for labor
+    
+    % equations
+    C + kp - (1-delta)*k == y;  % goods demand = goods supply
+    
+    % post evaluation
+    N = nd; % aggregate labor demand
+end;
+

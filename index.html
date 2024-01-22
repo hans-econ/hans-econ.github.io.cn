@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HANS: 含有异质性主体宏观模型的求解工具箱 &mdash; HANS 主页</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="入门：Krusell &amp; Smith（1998）" href="examples/KS_JEDC10/ks.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            HANS: 含有异质性主体宏观模型的求解工具箱
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/KS_JEDC10/ks.html">入门：Krusell &amp; Smith（1998）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/HANK1_ZLB/hank1_zlb.html">求解非线性转移路径：存在零利率下限的前瞻性指引（McKay，Nakamura &amp; Steinsson，2016）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/HANK2_SSJ/hank2_ssj.html">求解资产组合：两资产 HANK 模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/KT2008/kt2008.html">处理带有非凸性调整成本的模型：Khan and Thomas (2008)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cores/methodology.html">算法</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cores/api.html">工具箱调用接口说明（API Reference）</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">HANS: 含有异质性主体宏观模型的求解工具箱</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active"><strong>HANS</strong>: 含有异质性主体宏观模型的求解工具箱</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="hans">
+<h1><strong>HANS</strong>: 含有异质性主体宏观模型的求解工具箱<a class="headerlink" href="#hans" title="Permalink to this heading"></a></h1>
+<p><strong>HANS</strong> 是一个求解异质性主体（Heterogeneous-Agent, HA）宏观模型非线性解的工具箱，其算法基于文章 Bai, Luo 和 Wang (2023) 。现有其他求解 HA 模型的工具箱包括：</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://econ-ark.org/">Econ-ARK</a></p></li>
+<li><p><a class="reference external" href="https://github.com/gregkaplan/phact">PHACT</a></p></li>
+<li><p><a class="reference external" href="https://github.com/shade-econ/sequence-jacobian">Sequence Space Jacobian</a></p></li>
+<li><p><a class="reference external" href="https://github.com/BASEforHANK">BASEforHANK</a></p></li>
+</ul>
+<p><strong>HANS</strong> 的优势在于能够解决具有任意维度内生状态变量的 HA 模型，处理包括投资组合选择在内的多维连续选择变量，处理离散选择，并且求解非线性转换路径。要了解该工具箱的功能和用法，请参见下面的示例列表。</p>
+<p><strong>HANS</strong> 的优势还在于以类似 Dynare 的直观模型脚本文件为输入，编译 C++ 二进制文件以进行高性能计算，并提供用户友好的 MATLAB 接口。例如，Krusell 和 Smith (1998) 的模型可以用以下工具箱脚本表示：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta w r;
+<span class="linenos"> 2</span>beta = 0.99;
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">var_shock</span> e;
+<span class="linenos"> 5</span><span class="k">shock_trans</span> = [0.600000, 0.400000;
+<span class="linenos"> 6</span>               0.044445, 0.955555];
+<span class="linenos"> 7</span>e = [0.00, 1.00];
+<span class="linenos"> 8</span>
+<span class="linenos"> 9</span><span class="k">var_state</span> k;
+<span class="linenos">10</span>k = exp(linspace(log(0.25), log(500 + 0.25), 500)) - 0.25;
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="c">% allow multiple choice variables</span>
+<span class="linenos">13</span><span class="k">var_policy</span> c kp;
+<span class="linenos">14</span><span class="k">initial</span> c 1.0;
+<span class="linenos">15</span><span class="k">initial</span> kp 0.0;
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="k">vfi;</span>
+<span class="linenos">18</span>    budget = (1+r)*k + w*e;
+<span class="linenos">19</span>    u = log(c);
+<span class="linenos">20</span>    <span class="c">% decision problem stated following the Bellman equation</span>
+<span class="linenos">21</span>    Tv = u + beta*EXPECT(v(kp));
+<span class="linenos">22</span>    <span class="c">% allow arbitrary equality/inequality constraints</span>
+<span class="linenos">23</span>    c + kp == budget;
+<span class="linenos">24</span>    kp &gt;= 0.0;
+<span class="linenos">25</span><span class="k">end;</span>
+<span class="linenos">26</span>
+<span class="linenos">27</span><span class="k">var_agg</span> K;
+<span class="linenos">28</span>K = 40.0;       <span class="c">% initial guess</span>
+<span class="linenos">29</span>L = 1.0;        <span class="c">% constant labor</span>
+<span class="linenos">30</span>z = 1.0;        <span class="c">% TFP</span>
+<span class="linenos">31</span>alpha = 0.36;   <span class="c">% capital share</span>
+<span class="linenos">32</span>delta = 0.025;  <span class="c">% depreciation</span>
+<span class="linenos">33</span>
+<span class="linenos">34</span><span class="k">var_agg_shock</span> z;
+<span class="linenos">35</span>
+<span class="linenos">36</span><span class="k">model;</span>
+<span class="linenos">37</span>    <span class="c">% aggregate conditions stated like Dynare</span>
+<span class="linenos">38</span>    r = z*alpha*(K(-1)^(alpha-1))*(L^(1-alpha)) - delta;
+<span class="linenos">39</span>    w = z*(1-alpha)*(K(-1)^alpha)*(L^(-alpha));
+<span class="linenos">40</span>    K == kp;    <span class="c">% asset demand = asset supply</span>
+<span class="linenos">41</span>    <span class="c">% allow box constraints for aggregate variables</span>
+<span class="linenos">42</span>    K &gt;= 38.0;  <span class="c">% make sure VFI converges</span>
+<span class="linenos">43</span><span class="k">end;</span>
+</pre></div>
+</div>
+<p>请参照以下示例开始使用 <strong>HANS</strong>。</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/KS_JEDC10/ks.html">入门：Krusell &amp; Smith（1998）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/KS_JEDC10/ks.html#id1">模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KS_JEDC10/ks.html#hmod">工具箱脚本（hmod）文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KS_JEDC10/ks.html#id2">使用工具箱</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KS_JEDC10/ks.html#id3">接下来做什么？</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/HANK1_ZLB/hank1_zlb.html">求解非线性转移路径：存在零利率下限的前瞻性指引（McKay，Nakamura &amp; Steinsson，2016）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK1_ZLB/hank1_zlb.html#id1">模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK1_ZLB/hank1_zlb.html#hmod">hmod 文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK1_ZLB/hank1_zlb.html#id6">使用工具箱</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/HANK2_SSJ/hank2_ssj.html">求解资产组合：两资产 HANK 模型</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK2_SSJ/hank2_ssj.html#id1">模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK2_SSJ/hank2_ssj.html#hmod">hmod 文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/HANK2_SSJ/hank2_ssj.html#id10">使用工具箱</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/KT2008/kt2008.html">处理带有非凸性调整成本的模型：Khan and Thomas (2008)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/KT2008/kt2008.html#id1">模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KT2008/kt2008.html#id2">问题的求解</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KT2008/kt2008.html#hmod">hmod 文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KT2008/kt2008.html#id3">使用工具箱</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/KT2008/kt2008.html#id4">下一步</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cores/methodology.html">算法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cores/methodology.html#id2">通用框架</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cores/methodology.html#broyden-jacobian">使用局部 Broyden 更新计算雅各比矩阵（Jacobian）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cores/methodology.html#id3">其他实现细节</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cores/api.html">工具箱调用接口说明（API Reference）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cores/api.html#hmod">脚本 (hmod) 文件编辑说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cores/api.html#matlab">MATLAB 接口</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="examples/KS_JEDC10/ks.html" class="btn btn-neutral float-right" title="入门：Krusell &amp; Smith（1998）" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, 白金辉, 罗文澜, 王鹏飞.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

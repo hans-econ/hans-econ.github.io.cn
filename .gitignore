@@ -1,0 +1,6 @@
+*.m
+*.h
+dpopt_*
+cache/
+build/
+*.pdf

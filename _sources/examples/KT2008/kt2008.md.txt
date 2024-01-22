@@ -1,0 +1,185 @@
+(kt2008)=
+# 处理带有非凸性调整成本的模型：Khan and Thomas (2008)
+
+本文是一个带有异质性厂商的实际商业周期模型。在这个模型中，厂商调整资本规模时会面临固定成本，因此投资决策会服从 $(S,s)$ 规则。我们的工具包可以用以求解此类问题的稳态，以及宏观冲击后的线性/非线性转移路径。参照 [Boppart, Krusell & Mitman (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0165188918300022) 和 [Auclert et al. (2021)](https://onlinelibrary.wiley.com/doi/full/10.3982/ECTA17434)，我们求解的确定性转移路径刻画了宏观冲击的一阶影响，这与采用[Winberry (2018)](https://onlinelibrary.wiley.com/doi/full/10.3982/QE740)中局部扰动法得到的结果是一致的。
+
+我们参照 [Winberry (2018)](https://onlinelibrary.wiley.com/doi/full/10.3982/QE740) 对 [Khan & Thomas (2008)](https://onlinelibrary.wiley.com/doi/abs/10.1111/j.1468-0262.2008.00837.x) 中的参数进行了调整，以剔除趋势性。
+
+## 模型
+
+**异质性厂商** 模型中的厂商在个体生产率 $\varepsilon$ 以及资本 $k$ 上有异质性。其中生产率的变动服从一个外生的马尔科夫链。当进行投资决策时，如果厂商的投资超出 $[-ak,ak]$，就需要支付一定的固定成本，即 $\xi$ 单位的劳动。如果不支付这个固定成本，厂商下一期的资本规模必须落在 $[(1-\delta+a)k,(1-\delta+b)k]$ 的区间内，其中 $\delta>0$ 表示资本的折旧率。投资的固定成本 $\xi$ 是一个 i.i.d. 的随机变量，服从 $[0,\bar{\xi}]$ 的均匀分布，它的分布函数我们用 $G$ 来表示。
+
+在每一个时间点 $t$，厂商的状态变量包括 $(\varepsilon,k,\xi)$。厂商的最优化问题可以表示为：
+
+$$
+v_t^1(\varepsilon,k,\xi)=\max_{n,k^*,k^C} \Big[z_t \varepsilon k^{\alpha}n^{\nu}-w_t n+(1-\delta)k+\max\{-\xi \omega_t+r_t(\varepsilon,k^*),r_t(\varepsilon,k^C)\}\Big]
+\\
+s.t. \quad n\geq 0,  k^* \geq 0
+\\
+k^C\in [(1-\delta-a)k,(1-\delta+a)k]
+$$
+
+其中，$z_t$ 代表总体的生产率水平，$w_t$ 代表工资率，$r_t(\varepsilon,k')$ 表示在下一期拥有资本 $k'$ 的厂商的存续价值。每一个厂商会选择最优的劳动需求、资本规模。在决定最优资本规模时，厂商会比较支付投资调整成本和不支付时的公司价值，并选择是否支付投资调整成本以最大化公司的存续价值。公司的存续价值可以表示为：
+
+$$
+r_t(\varepsilon,k') = -k' + d_t\cdot\mathbb{E}[v^0_{t+1}(\varepsilon',k')|\varepsilon]
+$$
+
+其中，$d_t$ 是与家庭最优化决策相一致的内生贴现率；$v_{t+1}^0$ 是考虑过未来调整成本之后公司的预期价值。
+
+$$
+v_{t+1}^0(\varepsilon',k')=\int_0^{\bar{\xi}} v_{t+1}^1(\varepsilon',k',\xi') G (d\xi')
+$$
+
+公司是否支付投资调整成本取决于调整成本的相对大小：当自由选择资本规模的净回报高于需要支付的调整成本时，公司会选择支付调整成本：
+
+$$
+\xi \leq \xi^*\equiv \frac{r_t(\varepsilon,k^*)-r_t(\varepsilon,k^C)}{\omega_t}
+$$
+
+因此，公司愿意支付调整成本的概率可以表示为 $g_{a,t}(\varepsilon,k)$。我们用 $\Gamma_t$ 来表示公司在状态变量 $(\varepsilon,k)$ 上的分布。
+
+
+**代表性家庭** 的效用函数可以表示为
+$$
+\sum_{t=0}^{\infty} \beta^t \Big[\frac{C_t^{1-\sigma}}{1-\sigma}-\chi N_t\Big]
+$$
+
+家庭的最优化条件可以推导出贴现因子和工资率：
+
+$$
+d_t = \beta \Big[\frac{C_{t+1}}{C_t}\Big]^{-\sigma}
+\\
+w_t C_t^{-\sigma}=\chi
+$$
+
+**市场出清条件**
+
+劳动力市场出清条件如下：
+
+$$
+N_t = \underbrace{\int g_{n,t}(\varepsilon,k) d \Gamma_t}_{\text{用于生产的劳动力}}+ \underbrace{\iint_0^{\xi_t^*(\varepsilon,k)} \xi G(d\xi)d\Gamma_t}_{\text{资本调整成本中的劳动力}}
+$$
+
+商品市场出清条件如下：
+
+$$
+C_t=\int \{z_t \varepsilon k^{\alpha}[g_{n,t}(\varepsilon,k)]^{\nu} + (1-\delta)k\} d \Gamma_t - \int_0^{\xi_t^*(\varepsilon.k)} g_{k^*,t}(\varepsilon,k) d\Gamma_t-\int_{\xi_t^*(\varepsilon.k)}^{\bar{\xi}} g_{k^C,t}(\varepsilon,k) d\Gamma_t
+$$
+
+**序贯竞争性均衡** 给定厂商的初始分布 $\Gamma_0$, 序贯竞争性均衡由以下条件刻画： (1) 厂商的价值函数和决策规则 $\{v_t^1,v_t^0,r_t,\xi_t^*,g_{k^*,t},g_{k^C,t}\}$；(2) 总体数量与价格 $\{C_t,N_t,\omega_t,d_t\}$；(3) 厂商个体状态变量的联合分布 $(\varepsilon,k)$, $\{\Gamma_t\}$，其中：
+
+- 厂商的价值函数和决策规则满足贝尔曼方程；
+
+- $\{C_t,N_t,\omega_t,d_t\}$ 满足家庭单位最优化条件和市场出清条件；
+
+- $\{\Gamma_t\}$ 符合 $\varepsilon$的外生转移矩阵和决策规则$\{\xi_t^*,g_{k^*,t},g_{k^C,t}\}$. $\Gamma_t$的迭代规则 可以由如下的方程刻画：
+
+$$
+\Gamma_{t+1}(\mathcal{E}',\mathcal{K}')=\int
+\left(
+\int_0^{\xi_t^*(\varepsilon,k)}\mathcal{I}(g_{k^*,t}(\varepsilon,k)\in \mathcal{K}')G(d\xi)+
+\int_{\xi_t^*(\varepsilon,k)}^{\bar{\xi}}\mathcal{I}(g_{k^C,t}(\varepsilon,k)\in \mathcal{K}')G(d\xi)
+\right)P(\mathcal{E}'|\varepsilon)\Gamma_t(d \varepsilon, dk), \forall \text{博雷尔集} (\mathcal{E}',\mathcal{K}')
+$$
+
+其中，$P(\mathcal{E}'|\varepsilon)$ 是 $\varepsilon$ 的条件转移概率。
+
+## 问题的求解
+
+厂商的最优化问题可以做如下的简化。首先，企业的劳动力决策不依赖于投资的决策，因此我们可以单独写出劳动力的决策过程：
+
+$$
+v_t^1(\varepsilon,k,\xi)=(1-\delta)k+\max_{n} (z_t \varepsilon k^{\alpha}n^{\nu} -\omega_t n)
++\max\Big\{-\xi \omega_t+ \max_{k^*\geq0}r_t(\varepsilon,k^*), \max_{k^C\in [(1-\delta-a)k,(1-\delta+a)k]} r_t(\varepsilon,k^C)\Big\}
+$$
+
+其次，由于我们假设 $\xi$ 的抽样来自于独立的均匀分布，我们可以利用决策的临界规则来算出期望价值：
+
+$$
+v_t^0(\varepsilon,k)=\int_0^{\bar{\xi}} v_t^1(\varepsilon,k,\xi)G(d\xi)
+\\
+=\pi_t(\varepsilon,k)+\int_0^{\xi_t^*(\varepsilon,k)} [R_t^a(\varepsilon,k)-\xi \omega_t]\frac{1}{\bar{\xi}} d\xi+\int_{\xi_t^*(\varepsilon,k)}^{\bar{\xi}}R_t^c(\varepsilon,k)\frac{1}{\bar{\xi}} d\xi
+\\
+=\pi_t(\varepsilon,k)+\frac{\xi_t^*(\varepsilon,k)}{\overline{\xi}}R_t^a(\varepsilon,k)-\frac{\omega_t}{2\bar{\xi}}[\xi_t^*(\varepsilon,k)]^2+
+\left(1-\frac{\xi_t^*(\varepsilon,k)}{\overline{\xi}}\right)R_t^c(\varepsilon,k)
+$$
+
+其中，$\pi_t(\varepsilon,k)\equiv(1-\delta)k+\max_{n} (z_t \varepsilon k^{\alpha}n^{\nu} -\omega_t n)$ 是最大化的利润，$R_t^a(\varepsilon,k)\equiv\max_{k^*\geq0}r_t(\varepsilon,k^*)$。$R_t^c(\varepsilon,k)\equiv\max_{k^C\in [(1-\delta-a)k,(1-\delta+a)k]}r_t(\varepsilon,k^C)$。阈值$\xi_t^*(\varepsilon,k)$ 满足：
+
+$$
+\xi^*_t(\varepsilon,k) = \max\{\min\{\frac{R_t^a(\varepsilon,k)-R_t^c(\varepsilon,k)}{\omega_t},\bar{\xi}\},0\}
+$$
+
+给定上述的求解过程，我们可以将模型输入工具包进行求解。
+
+## hmod 文件
+
+原文的模型可以由 {download}`KT2008.hmod`表示，具体如下：
+
+```{literalinclude} KT2008.hmod
+:language: HANS
+:linenos:
+```
+我们结合这个案例，介绍工具包的几个功能。首先，我们的工具包可以用于同时求解多个最优化问题，只需把目标函数 "objective" 定义为每一个最优化问题之和即可：
+
+```{literalinclude} KT2008.hmod
+:language: HANS
+:linenos:
+:lineno-match:
+:start-at: vfi;
+:end-at: end;
+:emphasize-lines: 9-11, 23
+```
+
+在这里，受约束和不受约束（支付调整成本）的问题是相互独立的，因此我们把这两个问题的目标函数 "objective" 分别定义为 *Ra* 和 *Rc*。
+
+贝尔曼方程的迭代值 "Tv" 不一定要和定义的目标函数 "objective" 保持一致。
+
+接下来，我们输入内生状态变量的转移过程。
+
+```{literalinclude} KT2008.hmod
+:language: HANS
+:linenos:
+:lineno-match:
+:start-at: k(+1)
+:end-before: end;
+```
+
+这里的语法是: var_state_name(+1) = {value_1, value_2, ...} {probability_1, probability_2, ...}.
+
+接下来，我们可以在 **model_modname** (var_agg_1, var_agg_2,...)的模块中，引入与 **model** 模块不完全一样的方程组。
+
+```{literalinclude} KT2008.hmod
+:language: HANS
+:linenos:
+:lineno-match:
+:start-at: model_cali
+:end-at: end;
+:emphasize-lines: 1, 6-7
+```
+
+在这里，我们额外定义了一些用于校准的方程。例如，我们在方程组中引入了一个新的变量$\chi$以及相应的方程，使得劳动总需求等于总供给。我们的工具包可以产生一个叫做 solve_modname.m 的文件，里面包含了这些用于校准的方程组，并且会在求解时调用。
+
+## 使用工具箱
+
+在设置好输入的文本后，我们的工具包会自动产生Matlab文件，包括*solve_vfi.m*, *solve_ss.m*, *solve_trans_linear.m*, *solve_trans_nonlinear.m*，*solve_cali.m*，以及其他用于求解稳态、稳定分布、转移矩阵以及其他功能（例如校准）的方程。这些生成的文件包括：
+
+```{raw} html
+:file: kt2008_notebook.html
+```
+
+```{raw} latex
+\includepdf[pages=-]{../../source/examples/KT2008/kt2008_notebook.pdf}
+```
+
+## 下一步
+
+理解 [算法](toolbox_algorithm) 的细节。
+
+熟悉 [Toolbox API reference](toolbox_api)。
+
+更多的案例:
+- [Krusell and Smith (1998)](ks_1998)：一个最基础的模型。
+- [McKay, Nakamura & Steinsson (2016)](hank_zlb) 一个带有异质性个体的新凯恩斯模型，需要求解复杂的高度非线性的均衡。
+- [一个带有两种资产的HANK模型](hank2_ssj)，需要求解资产配置决策。

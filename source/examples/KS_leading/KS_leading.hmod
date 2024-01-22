@@ -1,0 +1,43 @@
+parameters beta w r;
+beta = 0.99;
+
+var_shock e;
+shock_trans = [0.600000, 0.400000;
+               0.044445, 0.955555];
+e = [0.00, 1.00];
+
+var_state k;
+k = exp(linspace(log(0.25), log(500 + 0.25), 500)) - 0.25;
+
+% allow multiple choice variables
+var_policy c kp;
+initial c 1.0;
+initial kp 0.0;
+
+vfi;
+    budget = (1+r)*k + w*e;
+    u = log(c);
+    % decision problem stated following the Bellman equation
+    Tv = u + beta*EXPECT(v(kp));
+    % allow arbitrary equality/inequality constraints
+    c + kp == budget;
+    kp >= 0.0;
+end;
+
+var_agg K;
+K = 40.0;       % initial guess
+L = 1.0;        % constant labor
+z = 1.0;        % TFP
+alpha = 0.36;   % capital share
+delta = 0.025;  % depreciation
+
+var_agg_shock z;
+
+model;
+    % aggregate conditions stated like Dynare
+    r = z*alpha*(K(-1)^(alpha-1))*(L^(1-alpha)) - delta;
+    w = z*(1-alpha)*(K(-1)^alpha)*(L^(-alpha));
+    K == kp;    % asset demand = asset supply
+    % allow box constraints for aggregate variables
+    K >= 38.0;  % make sure VFI converges
+end;

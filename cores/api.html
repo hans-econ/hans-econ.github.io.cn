@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>工具箱调用接口说明（API Reference） &mdash; HANS 主页</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="算法" href="methodology.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            HANS: 含有异质性主体宏观模型的求解工具箱
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/KS_JEDC10/ks.html">入门：Krusell &amp; Smith（1998）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/HANK1_ZLB/hank1_zlb.html">求解非线性转移路径：存在零利率下限的前瞻性指引（McKay，Nakamura &amp; Steinsson，2016）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/HANK2_SSJ/hank2_ssj.html">求解资产组合：两资产 HANK 模型</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/KT2008/kt2008.html">处理带有非凸性调整成本的模型：Khan and Thomas (2008)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="methodology.html">算法</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">工具箱调用接口说明（API Reference）</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hmod">脚本 (hmod) 文件编辑说明</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matlab">MATLAB 接口</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#solve_vfi"><code class="docutils literal notranslate"><span class="pre">solve_vfi()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solve_ss"><code class="docutils literal notranslate"><span class="pre">solve_ss()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solve_trans_linear"><code class="docutils literal notranslate"><span class="pre">solve_trans_linear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#solve_trans_nonlinear"><code class="docutils literal notranslate"><span class="pre">solve_trans_nonlinear()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simulate_stochastic"><code class="docutils literal notranslate"><span class="pre">simulate_stochastic()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">HANS: 含有异质性主体宏观模型的求解工具箱</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">工具箱调用接口说明（API Reference）</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="api-reference">
+<span id="toolbox-api"></span><h1>工具箱调用接口说明（API Reference）<a class="headerlink" href="#api-reference" title="Permalink to this heading"></a></h1>
+<section id="hmod">
+<h2>脚本 (hmod) 文件编辑说明<a class="headerlink" href="#hmod" title="Permalink to this heading"></a></h2>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>所有语句均需以英文输入法状态下的半角分号（;）结尾。</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">parameters</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明 <strong>vfi</strong> 模块中包含的参数。</p>
+<p>“parameters” 需包含：（1）在 <strong>vfi</strong> 模块中的参数；（2）在 <em>var_pre_vfi</em> 模块中并随 <em>var_agg</em> 变化的参数。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_shock</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明个体外生状态变量，需为离散的马尔科夫链。</p>
+<p>需在变量 <em>shock_trans</em> 中给出相应的伴随转移矩阵。</p>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">var_shock</span> e z;
+<span class="linenos"> 2</span>e_grid = [1.0, 2.0];
+<span class="linenos"> 3</span>e_trans = [0.4 0.6;0.6 0.4];
+<span class="linenos"> 4</span>z_grid = [2.0,3.0,4.0];
+<span class="linenos"> 5</span>z_trans = [0.6 0.2 0.2;0.2 0.6 0.2; 0.2 0.2 0.6];
+<span class="linenos"> 6</span><span class="c">% 生成张量组合</span>
+<span class="linenos"> 7</span>[e,z] = ndgrid(e,z);
+<span class="linenos"> 8</span>e = e(:)&#39;;
+<span class="linenos"> 9</span>z = z(:)&#39;;
+<span class="linenos">10</span><span class="k">shock_trans</span> = kron(z_trans, e_trans);
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_state</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明个体内生状态变量，需为连续变量。</p>
+<p>需明确每个离散状态变量的格点。工具箱将使用线性插值法或三次样条插值法在格点上近似值函数与策略函数。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_pre_vfi</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明由 <em>var_shock</em> 或 <em>var_state</em> 定义的变量，这些变量需在声明 vfi 模块前被赋值。</p>
+<p>在 <em>var_pre_vfi</em> 模块中声明的变量可被用于定义 <em>var_policy</em> 的初始值或直接在 vfi 模块中使用。这避免了在求解最优化问题过程中不必要的重复计算。</p>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta r w;
+<span class="linenos"> 2</span>...
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">var_shock</span> e;
+<span class="linenos"> 5</span>...
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">var_state</span> a;
+<span class="linenos"> 8</span>...
+<span class="linenos"> 9</span>
+<span class="hll"><span class="linenos">10</span><span class="k">var_pre_vfi</span> budget;
+</span><span class="hll"><span class="linenos">11</span>budget = (1+r)*a + w*e;
+</span><span class="linenos">12</span>
+<span class="linenos">13</span><span class="k">var_policy</span> ap;
+<span class="linenos">14</span>...
+<span class="linenos">15</span>
+<span class="linenos">16</span><span class="k">vfi;</span>
+<span class="hll"><span class="linenos">17</span>    c = budget - ap;
+</span><span class="linenos">18</span>    Tv = u(c) + beta*EXPECT(v(ap));
+<span class="linenos">19</span>    ap &gt;= 0.0;
+<span class="linenos">20</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_policy</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明个体策略变量，即异质性主体优化的变量。</p>
+<p>个体策略变量的初始值需给定，可由 <em>var_state</em> 和/或 <em>var_pre_vfi</em> 确定。</p>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta r w;
+<span class="linenos"> 2</span>...
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">var_shock</span> e;
+<span class="linenos"> 5</span>...
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">var_state</span> a;
+<span class="linenos"> 8</span>...
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">var_pre_vfi</span> budget;
+<span class="linenos">11</span>budget = (1+r)*a + w*e;
+<span class="linenos">12</span>
+<span class="hll"><span class="linenos">13</span><span class="k">var_policy</span> c ap;
+</span><span class="hll"><span class="linenos">14</span><span class="k">initial</span> ap 0.0;
+</span><span class="hll"><span class="linenos">15</span><span class="k">initial</span> c budget;
+</span><span class="linenos">16</span>
+<span class="linenos">17</span><span class="k">vfi;</span>
+<span class="linenos">18</span>    Tv = u(c) + beta*EXPECT(v(ap));
+<span class="linenos">19</span>    ap &gt;= 0.0;
+<span class="linenos">20</span>    c + ap == budget;
+<span class="linenos">21</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_aux</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明辅助变量，可表示为 <em>var_shock</em>，<em>var_state</em> 和/或 <em>var_policy</em> 的简单函数。</p>
+<p>辅助变量的取值需在 <strong>vfi</strong> 模块中定义并返回。</p>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta r w;
+<span class="linenos"> 2</span>...
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">var_shock</span> e;
+<span class="linenos"> 5</span>...
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">var_state</span> a;
+<span class="linenos"> 8</span>...
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">var_pre_vfi</span> budget;
+<span class="linenos">11</span>budget = (1+r)*a + w*e;
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="k">var_policy</span> c ap;
+<span class="linenos">14</span><span class="k">initial</span> ap 0.0;
+<span class="linenos">15</span><span class="k">initial</span> c budget;
+<span class="linenos">16</span>
+<span class="hll"><span class="linenos">17</span><span class="k">var_aux</span> inc;
+</span><span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">vfi;</span>
+<span class="linenos">20</span>    Tv = u(c) + beta*EXPECT(v(ap));
+<span class="linenos">21</span>    ap &gt;= 0.0;
+<span class="linenos">22</span>    c + ap == budget;
+<span class="hll"><span class="linenos">23</span>    inc = a*r + w*e;
+</span><span class="linenos">24</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">vfi;</span> <span class="pre">...</span> <span class="pre">end;</span></span></dt>
+<dd><p>定义 <strong>vfi</strong> 模块。此模块将从上到下、逐行运行。在此模块中：</p>
+<ul class="simple">
+<li><p>每次迭代后的更新值需赋值给变量 “Tv”。</p></li>
+<li><p>最优化的目标需在名为 “objective” 的变量中给出。如果没有变量 “objective”，则默认使用变量 “Tv” 作为最优化的目标。</p></li>
+<li><p>用于下一次迭代的值函数（即上一次迭代得到的值函数）可通过调用 v(var_state_1_future,var_state_2_future,…) 来获得。如果函数调用被 EXPECT() 作用，则会基于当前外生状态所对应的转移矩阵计算下一期值函数的期望值。</p></li>
+<li><p>等式或不等式约束可用 “==”、“&lt;=” 或 “&gt;=” 表示。
+— 所有 <em>var_aux</em> 变量的定义都需在这个模块给出。</p></li>
+<li><p>状态转移默认为评估未来值函数时的自变量。也可通过下述语句明确指定状态转移过程： <em>var_state</em>(+1) = {state_value_1, state_value_2，…} {prob_1, prob_2，}，其中，state_value_1、state_value_2 等为状态值，prob_1、prob_2 等为相关的状态转移概率。</p></li>
+</ul>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta r w;
+<span class="linenos"> 2</span>...
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">var_shock</span> e;
+<span class="linenos"> 5</span>...
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="k">var_state</span> a;
+<span class="linenos"> 8</span>...
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="k">var_pre_vfi</span> budget;
+<span class="linenos">11</span>budget = (1+r)*a + w*e;
+<span class="linenos">12</span>
+<span class="linenos">13</span><span class="k">var_policy</span> c ap;
+<span class="linenos">14</span><span class="k">initial</span> ap 0.0;
+<span class="linenos">15</span><span class="k">initial</span> c budget;
+<span class="linenos">16</span>
+<span class="linenos">17</span><span class="k">var_aux</span> inc;
+<span class="linenos">18</span>
+<span class="linenos">19</span><span class="k">vfi;</span>
+<span class="linenos">20</span>    <span class="c">% 更新贝尔曼方程 Tv 的取值</span>
+<span class="linenos">21</span>    <span class="c">% Tv 也是最优化的目标</span>
+<span class="linenos">22</span>    <span class="c">% “ap” 会自动成为 a 的状态转移</span>
+<span class="linenos">23</span>    Tv = u(c) + beta*EXPECT(v(ap));
+<span class="linenos">24</span>
+<span class="linenos">25</span>    <span class="c">% 也可明确指定状态转移过程</span>
+<span class="linenos">26</span>    a(+1) = {ap} {1};
+<span class="linenos">27</span>
+<span class="linenos">28</span>    <span class="c">% 等式和不等式约束</span>
+<span class="linenos">29</span>    ap &gt;= 0.0;
+<span class="linenos">30</span>    c + ap == budget;
+<span class="linenos">31</span>
+<span class="linenos">32</span>    <span class="c">% var_aux 的值</span>
+<span class="linenos">33</span>    inc = a*r + w*e;
+<span class="linenos">34</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>下述均衡模型的定义和相关信息是可选的。工具箱可以生成独立的代码仅用于求解值函数迭代。</p>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_agg</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明总体均衡条件对应的未知变量。</p>
+<p>未知变量的初始值需给出。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">var_agg_shock</span> <span class="pre">var1</span> <span class="pre">var2</span> <span class="pre">...;</span></span></dt>
+<dd><p>声明外生的，随时间变化的总体变量。</p>
+<p>外生时变的总体变量的稳态值需给出。</p>
+<p>对于命名为 “var” 的 <em>var_agg_shock</em>，其时间序列值可以通过在传递给模型求解脚本的选项中提供一个名为 “var_t” 的字段来覆盖。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">model;</span> <span class="pre">...</span> <span class="pre">end;</span></span></dt>
+<dd><p>定义模型的总体均衡系统。在此模块中：</p>
+<ul class="simple">
+<li><p>使用运算符“==”定义均衡方程。</p></li>
+<li><p>代码从上到下计算，并可赋值给中间变量。</p></li>
+<li><p>在定义方程组之前，需更新所有随 <em>var_agg</em> 变化的参数，如资本存量决定的的工资和利率。</p></li>
+<li><p>在定义方程组时，可使用变量 <em>var_policy</em>，表示对个体策略函数的加总。</p></li>
+<li><p>变量的滞后值和先导值用 varname(-l) 或 varname(+l) 表示，其中 l 为滞后或前导的期数。只有在 <em>var_agg</em> 中声明的变量才能使用其滞后值和先导值，即被赋值的中间变量不能使用滞后值和先导值进行索引。</p></li>
+<li><p>预先确定的变量（如RBC中的资本）需要作为滞后变量进入系统。</p></li>
+<li><p>方程求解后将返回所有在等式左边的赋值变量，便于计算其他感兴趣的均衡变量。</p></li>
+</ul>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="k">parameters</span> beta r w;
+<span class="linenos"> 2</span>...
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">var_state</span> a;
+<span class="linenos"> 6</span>...
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span><span class="k">var_policy</span> ap;
+<span class="linenos"> 9</span>...
+<span class="linenos">10</span>
+<span class="linenos">11</span><span class="k">vfi;</span>
+<span class="linenos">12</span>	...
+<span class="linenos">13</span><span class="k">end;</span>
+<span class="linenos">14</span>
+<span class="linenos">15</span><span class="k">var_agg</span> K;
+<span class="linenos">16</span>K = 30.0;	<span class="c">% 用于求解稳态的初始值</span>
+<span class="linenos">17</span><span class="k">var_agg_shock</span> Z;
+<span class="linenos">18</span>Z = 1.0;	<span class="c">% 稳态值</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span><span class="k">model;</span>
+<span class="linenos">21</span>    <span class="c">% 更新进入 vfi 的参数</span>
+<span class="linenos">22</span>    <span class="c">% 资本是预先确定的，使用滞后值 K(-1)</span>
+<span class="linenos">23</span>    r = alpha * Z * K(-1)^(alpha-1) * L^(1-alpha) - delta;
+<span class="linenos">24</span>    w = (1-alpha) * Z * K(-1)^alpha * L^(-alpha);
+<span class="linenos">25</span>
+<span class="linenos">26</span>    <span class="c">% 使用 &quot;==&quot; 定义均衡方程</span>
+<span class="linenos">27</span>    <span class="c">% 下面使用的 ap 是 ap 在个体间的加总值</span>
+<span class="linenos">28</span>    K == ap; <span class="c">% 资产总需求 = 资产总供给</span>
+<span class="linenos">29</span>
+<span class="linenos">30</span>    <span class="c">% 后续赋值；所有被赋值的变量将被返回</span>
+<span class="linenos">31</span>    Y = Z*(K(-1)^alpha)*(L^(1-alpha));
+<span class="linenos">32</span>    I = K - (1 - delta)*K(-1);
+<span class="linenos">33</span>    C = Y - I;
+<span class="linenos">34</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">model_modname(var_agg_1,</span> <span class="pre">var_agg_2);</span> <span class="pre">...</span> <span class="pre">end;</span></span></dt>
+<dd><p>定义一个备选的均衡系统，其变量为 (var_agg_1, var_agg_2，…)。</p>
+<p>解析器会为每个备选的 model_modname 模块生成一个名为 “solve_modname.m” 的脚本文件。</p>
+<p>由此，不同的模型将共享相同的 <strong>vfi</strong> 模块。例如，用于校准的系统不同于求解均衡的系统。</p>
+<p>例子：</p>
+<div class="highlight-HANS notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>...
+<span class="linenos"> 2</span>
+<span class="linenos"> 3</span><span class="k">var_agg</span> K;
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">model;</span>
+<span class="linenos"> 6</span>    <span class="c">% 此模块用于求解均衡</span>
+<span class="linenos"> 7</span>    r = alpha * Z * K(-1)^(alpha-1) * L^(1-alpha) - delta;
+<span class="linenos"> 8</span>    w = (1-alpha) * Z * K(-1)^alpha * L^(-alpha);
+<span class="linenos"> 9</span>    K == ap; <span class="c">% 资产总需求 = 资产总供给</span>
+<span class="linenos">10</span><span class="k">end;</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span>model_cali(K,beta);
+<span class="linenos">13</span>    <span class="c">% 此模块用于校准 </span>
+<span class="linenos">14</span>    r = alpha * Z * K(-1)^(alpha-1) * L^(1-alpha) - delta;
+<span class="linenos">15</span>    w = (1-alpha) * Z * K(-1)^alpha * L^(-alpha);
+<span class="linenos">16</span>    Y = Z*(K(-1)^alpha)*(L^(1-alpha));
+<span class="linenos">17</span>    K == ap; <span class="c">% 资产总需求 = 资产总供给</span>
+<span class="linenos">18</span>    K/Y == KY_ratio_target;	<span class="c">% 用于校准的目标方程</span>
+<span class="linenos">19</span><span class="k">end;</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="matlab">
+<h2>MATLAB 接口<a class="headerlink" href="#matlab" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="solve_vfi">
+<span class="sig-name descname"><span class="pre">solve_vfi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solve_vfi" title="Permalink to this definition"></a></dt>
+<dd><p>值函数迭代求解。</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options</strong> – <p>此结构可包含下述字段</p>
+<ul>
+<li><p>interp_order: 用于值函数近似的内插与外插维度。默认值：‘4+3’</p>
+<ul>
+<li><p>‘4’: 三次样条插值</p></li>
+<li><p>‘2’: 线性插值</p></li>
+<li><p>‘4+2’: 三次内插 + 线性外插</p></li>
+<li><p>‘4+3’: 三次内插 + 二次外插</p></li>
+<li><p>‘pchip’: MATLAB 的 pchip 函数（仅内生状态变量为一维时适用）</p></li>
+</ul>
+</li>
+<li><p>algorithm: 用于求解最优化问题的算法。当求解一维优化问题时，默认值：‘dbrent’；否则，默认值：“donlp2”。可选的值有:</p>
+<ul>
+<li><p>‘dbrent’</p></li>
+<li><p>‘golden’</p></li>
+<li><p>‘brent’</p></li>
+<li><p>‘nr3_dbrent’</p></li>
+<li><p>‘donlp2’</p></li>
+</ul>
+</li>
+<li><p>vfi_tol_v: 值函数收敛的误差容忍度。默认值：1e-6</p></li>
+<li><p>vfi_tol_policy: 策略函数收敛的误差容忍度。默认值：1e-12</p></li>
+<li><p>print_freq: 输出迭代信息的频率。默认值：100</p></li>
+<li><p>solver_tol_x: 个体优化问题的误差容忍度。默认值：1e-8</p></li>
+<li><p>solver_tol_con: 个体优化问题的可行性容差。默认值：1e-8</p></li>
+<li><p>num_threads: 求解个体优化问题时使用的线程数。默认值：由 ‘feature(numcores)’ 返回的值</p></li>
+</ul>
+</p></li>
+<li><p><strong>options</strong> – 已有的参数值会被此结构中包含的参数值覆盖。</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>此结构包含已解出的策略函数</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solve_ss">
+<span class="sig-name descname"><span class="pre">solve_ss</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solve_ss" title="Permalink to this definition"></a></dt>
+<dd><p>求解 <strong>model</strong> 模块中定义的均衡系统的稳态值。</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>options</strong> – <p>此结构可包含下述字段</p>
+<ul>
+<li><p>ss_solver: 用于求解稳态系统的方程求解器。默认值：‘Broyden’。可选的值有:</p>
+<ul>
+<li><p>‘Broyden’</p></li>
+<li><p>‘Newton’</p></li>
+<li><p>‘lsqnonlin’</p></li>
+<li><p>‘CoDoSol’</p></li>
+<li><p>‘fsolve’</p></li>
+</ul>
+</li>
+<li><p>ss_ftol: 传递给方程求解器的方程残差公差。默认值：1e-4</p></li>
+<li><p>ss_xtol: 传递给方程求解器的步长公差。默认值：1e-6</p></li>
+<li><p>ss_findiffstep: 计算数值导数的有限差分步长。默认值：1e-4</p></li>
+<li><p>HANS_x: 未知变量的初始值</p></li>
+</ul>
+</p></li>
+<li><p><strong>options</strong> – 还可包含需传递到值函数迭代（solve_vfi）的选项</p></li>
+<li><p><strong>options</strong> – 还可包含需被覆盖的参数值</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>此结构包含已解出的稳态值</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solve_trans_linear">
+<span class="sig-name descname"><span class="pre">solve_trans_linear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solve_trans_linear" title="Permalink to this definition"></a></dt>
+<dd><p>求解线性化转移路径。利用虚拟消息算法（fake news algorithm）计算个体变量加总对于参数的雅可比矩阵。</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ss</strong> – 此结构包含已解出的稳态值（由solve_ss返回），并在其附近进行线性化</p></li>
+<li><p><strong>options</strong> – <p>此结构可包含下述字段</p>
+<ul>
+<li><p>T: 转移路径的期数。默认值：200</p></li>
+</ul>
+</p></li>
+<li><p><strong>options</strong> – 对于名为 “var” 的 <em>var_agg_shock</em>，在此结构的 “var_t” 字段中提供更新的时间序列</p></li>
+<li><p><strong>options</strong> – 还可包含需传递到值函数迭代的选项</p></li>
+<li><p><strong>options</strong> – 还可包含需被覆盖的参数值</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>此结构包含已解出的转移路径和个体变量加总对于参数的雅可比矩阵</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solve_trans_nonlinear">
+<span class="sig-name descname"><span class="pre">solve_trans_nonlinear</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">init_ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">final_ss</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solve_trans_nonlinear" title="Permalink to this definition"></a></dt>
+<dd><p>求解非线性转移路径。</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>init_ss</strong> – 此结构包含转移路径开始时的初始稳态值</p></li>
+<li><p><strong>final_ss</strong> – 此结构包含转移路径收敛到的最终稳态值</p></li>
+<li><p><strong>options</strong> – <p>此结构可包含下述字段</p>
+<ul>
+<li><p>T: 转移路径的期数。默认值：200</p></li>
+<li><p>trans_linear_rslt: 已解出的线性化转移路径，包含个体变量加总对于参数的雅可比矩阵；将被用于构成非线性方程组的初始雅可比矩阵。默认值：empty，将调用 solve_trans_linear 计算</p></li>
+<li><p>trans_solver: 方程求解器。默认值：“Broyden”。可选的值有:</p>
+<ul>
+<li><p>“Broyden”</p></li>
+<li><p>“FixedJacobian”</p></li>
+<li><p>“BroydenMod”</p></li>
+<li><p>“Newton”</p></li>
+<li><p>“fsolve”</p></li>
+</ul>
+</li>
+<li><p>trans_ftol: 传递给方程求解器的方程残差公差。默认值：1e-4</p></li>
+<li><p>trans_xtol: 传递给方程求解器的步长公差。默认值：1e-6</p></li>
+<li><p>HANS_x: 未知变量的初始值</p></li>
+</ul>
+</p></li>
+<li><p><strong>options</strong> – 还可包含需传递到值函数迭代的选项</p></li>
+<li><p><strong>options</strong> – 还可包含需被覆盖的参数值</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>此结构包含已解出的非线性转移路径</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">solve_*modname*(options)</span></span></dt>
+<dd><p>求解 model_<em>modname</em> 模块中定义的备选均衡系统的稳态值。</p>
+<p>此函数的输入和输出结构与 solve_ss 相同。</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="simulate_stochastic">
+<span class="sig-name descname"><span class="pre">simulate_stochastic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eq_rslt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simulate_stochastic" title="Permalink to this definition"></a></dt>
+<dd><p>用已解出的均衡来模拟个体随机样本。</p>
+<dl class="myst field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>eq_rslt</strong> – 此结构包含稳态均衡（由 solve_ss 返回）或转移路径（由 solve_nonlinear_trans 返回）</p></li>
+<li><p><strong>options</strong> – <p>此结构可包含下述字段</p>
+<ul>
+<li><p>num_samples: 个体样本数。默认值：1e4</p></li>
+<li><p>num_periods: 时期数。默认值：1e3</p></li>
+<li><p>simulate_initials: 此结构包含状态变量的初始值。默认值：empty，将从稳态分布中对状态值进行抽样</p></li>
+<li><p>interp_order: 策略函数近似的内插与外插维度。默认值：‘2’</p>
+<ul>
+<li><p>‘4’: 三次样条插值</p></li>
+<li><p>‘2’: 线性插值</p></li>
+<li><p>‘4+2’: 三次内插 + 线性外插</p></li>
+<li><p>‘4+3’: 三次内插 + 二次外插</p></li>
+</ul>
+</li>
+<li><p>simu_print_freq: 输出模拟统计量的频率。默认值：1000</p></li>
+<li><p>num_threads: 用于策略函数插值的线程数。默认值：由 ‘feature(numcores)’ 返回的值</p></li>
+</ul>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="methodology.html" class="btn btn-neutral float-left" title="算法" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, 白金辉, 罗文澜, 王鹏飞.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
