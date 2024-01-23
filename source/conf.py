@@ -71,7 +71,7 @@ def setup(app: Sphinx):
 
 # -- Project information -----------------------------------------------------
 
-project = 'HANS: 含有异质性主体宏观模型的求解工具箱'
+project = 'HANS: 异质性主体宏观模型非线性解工具箱'
 copyright = '2023, 白金辉, 罗文澜, 王鹏飞'
 author = '白金辉, 罗文澜, 王鹏飞'
 
@@ -89,7 +89,7 @@ extensions = [
   'sphinx.ext.autosectionlabel',
   'sphinx.ext.githubpages',
 ]
-pdf_documents = [('index', u'rst2pdf', u'HANS: 含有异质性主体宏观模型的求解工具箱', u'白金辉, 罗文澜, 王鹏飞'),]
+pdf_documents = [('index', u'rst2pdf', u'HANS: 异质性主体宏观模型非线性解工具箱', u'白金辉, 罗文澜, 王鹏飞'),]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
